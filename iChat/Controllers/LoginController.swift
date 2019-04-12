@@ -135,7 +135,7 @@ class LoginController: UIViewController {
     }
 
     @objc func handleRegister () {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
+        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
             print("Form is not valid")
             return
         }
@@ -143,13 +143,23 @@ class LoginController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) {
             user, error in
             if error != nil {
-                print("123")
                 print(error!)
                 return
             }
             
             // successfuly authenticating user
             
+            let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
+            let values = ["name": name, "email": email]
+            
+            ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                if err != nil {
+                    print(err!)
+                    return
+                }
+                
+                print("saved user successfuly in firebase db")
+            })
             
         }
     }
