@@ -14,7 +14,15 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleNewMessage))
         checkIfUserLoggedIn()
+    }
+    
+    @objc func handleNewMessage () {
+        let newMessageController = NewMessageController()
+        let navController = UINavigationController(rootViewController: newMessageController)
+        present(navController, animated: true, completion: nil)
+        
     }
     
     func checkIfUserLoggedIn() {
