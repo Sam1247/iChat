@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		20AA03CE2260BF55003C6C92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */; };
 		20AA625A225FFD6A008BF4CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA6259225FFD6A008BF4CC /* AppDelegate.swift */; };
-		20AA625C225FFD6A008BF4CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA625B225FFD6A008BF4CC /* ViewController.swift */; };
+		20AA625C225FFD6A008BF4CC /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA625B225FFD6A008BF4CC /* MessagesController.swift */; };
 		20AA625F225FFD6A008BF4CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20AA625D225FFD6A008BF4CC /* Main.storyboard */; };
 		20AA6261225FFD6C008BF4CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20AA6260225FFD6C008BF4CC /* Assets.xcassets */; };
 		20AA6264225FFD6C008BF4CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20AA6262225FFD6C008BF4CC /* LaunchScreen.storyboard */; };
@@ -22,7 +22,7 @@
 		20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		20AA6256225FFD6A008BF4CC /* iChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20AA6259225FFD6A008BF4CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		20AA625B225FFD6A008BF4CC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		20AA625B225FFD6A008BF4CC /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		20AA625E225FFD6A008BF4CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		20AA6260225FFD6C008BF4CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20AA6263225FFD6C008BF4CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				20AA626C22600611008BF4CC /* LoginController.swift */,
-				20AA625B225FFD6A008BF4CC /* ViewController.swift */,
+				20AA625B225FFD6A008BF4CC /* MessagesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -91,7 +91,6 @@
 				665D2D1D3963D62DD05DF991 /* Pods-iChat.debug.xcconfig */,
 				1F04A3CAFB50A679AACB8619 /* Pods-iChat.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -228,7 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20AA625C225FFD6A008BF4CC /* ViewController.swift in Sources */,
+				20AA625C225FFD6A008BF4CC /* MessagesController.swift in Sources */,
 				20AA626D22600611008BF4CC /* LoginController.swift in Sources */,
 				20AA625A225FFD6A008BF4CC /* AppDelegate.swift in Sources */,
 			);
