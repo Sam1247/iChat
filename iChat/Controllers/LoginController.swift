@@ -150,9 +150,11 @@ class LoginController: UIViewController {
             // successfuly authenticating user
             
             let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
-            let values = ["name": name, "email": email]
             
-            ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            let usersRef = ref.child("users")
+            let values = ["name": name, "email": email]  
+            
+            usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
                     print(err!)
                     return
