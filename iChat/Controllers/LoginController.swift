@@ -17,19 +17,31 @@ class LoginController: UIViewController {
     let emailTextField = UITextField()
     let emailSeparator = UIView()
     let passwordTextField = UITextField()
+    let profileImageView = UIImageView()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
+        view.addSubview(profileImageView)
         
+        setupProfileImageView()
         setupInputsContainerView()
         setupLoginRegisterButton()
-
-
+    }
+    
+    func setupProfileImageView() {
+        profileImageView.image = UIImage(named: "ChatProfile")
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .scaleAspectFill
+        // constrains
+        profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
     func setupInputsContainerView () {
