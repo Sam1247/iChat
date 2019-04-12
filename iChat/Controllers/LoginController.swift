@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginController: UIViewController {
 
@@ -71,6 +72,7 @@ class LoginController: UIViewController {
         loginRegisterButton.setTitle("Register", for: .normal)
         loginRegisterButton.layer.cornerRadius = 5
         loginRegisterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        loginRegisterButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         // constrains
         loginRegisterButton.setTitleColor(#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), for: .normal)
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -132,4 +134,23 @@ class LoginController: UIViewController {
         passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
     }
 
+    @objc func handleRegister () {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) {
+            user, error in
+            if error != nil {
+                print("123")
+                print(error!)
+                return
+            }
+            
+            // successfuly authenticating user
+            
+            
+        }
+    }
 }
