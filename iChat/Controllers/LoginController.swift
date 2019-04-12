@@ -113,7 +113,7 @@ class LoginController: UIViewController {
         loginRegisterButton.setTitle("Register", for: .normal)
         loginRegisterButton.layer.cornerRadius = 5
         loginRegisterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        loginRegisterButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        loginRegisterButton.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
         // constrains
         loginRegisterButton.setTitleColor(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1), for: .normal)
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -177,8 +177,32 @@ class LoginController: UIViewController {
         passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
         passwordTextFieldHeightAnchor?.isActive = true
     }
+    
+    @objc func handleLoginRegister () {
+        if  loginRegisterSegmentedControl.selectedSegmentIndex == 1 {
+            handleRegister()
+        } else {
+            handleLogin()
+        }
+    }
 
-    @objc func handleRegister () {
+    func handleLogin() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    
+    func handleRegister () {
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
             print("Form is not valid")
             return
