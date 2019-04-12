@@ -190,15 +190,10 @@ class LoginController: UIViewController {
                 print(error!)
                 return
             }
-            
             guard let userID = Auth.auth().currentUser?.uid else { return }
-            
             // successfuly authenticating user
-            
             let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
-            
             let usersRef = ref.child("users").child(userID)
-            
             let values = ["name": name, "email": email]
             
             usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
@@ -206,8 +201,8 @@ class LoginController: UIViewController {
                     print(err!)
                     return
                 }
-                
                 print("saved user successfuly in firebase db")
+                self.dismiss(animated: true, completion: nil)
             })
             
         }
