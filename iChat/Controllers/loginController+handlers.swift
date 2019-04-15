@@ -54,15 +54,16 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             let imageName = UUID().uuidString
             let storageRef = Storage.storage().reference().child("images").child("\(imageName).png")
             if let uploadData = self?.profileImageView.image?.pngData() {
-                
-                storageRef.putData(uploadData, metadata: nil, completion: {
+                storageRef.putData(uploadData, metadata: nil) {
                     [weak self] (metadata, error) in
                     
                     if error != nil {
                         print(error!)
                         return
                     }
-                    storageRef.downloadURL(completion: { (url, error) in
+                    // saving image url 
+                    storageRef.downloadURL {
+                        (url, error) in
                         if error != nil {
                             print(error!)
                             return
@@ -71,8 +72,8 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                             let values = ["name": name, "email": email, "profileImageUrl": imageUrl]
                             self?.registerUserIntoDataBase(userID: userID, values: values)
                         }
-                    })
-                })
+                    }
+                }
             }
         }
     }
