@@ -82,7 +82,11 @@ class LoginController: UIViewController {
         profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -12).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 150).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfile)))
+        profileImageView.isUserInteractionEnabled = true
     }
+    
+    
     
     func setupInputsContainerView () {
         inputsContainerView.backgroundColor = UIColor.white

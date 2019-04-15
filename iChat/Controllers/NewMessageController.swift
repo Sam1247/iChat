@@ -28,7 +28,6 @@ class NewMessageController: UITableViewController {
                 let user = User()
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
-                //print(user.name, user.email)
                 DispatchQueue.main.async {[weak self] in
                     self?.tableView.reloadData()
                 }
@@ -46,13 +45,9 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        
         cell.textLabel?.text = users[indexPath.row].name
         cell.detailTextLabel?.text = users[indexPath.row].email
-        
-        
         return cell
     }
 }
