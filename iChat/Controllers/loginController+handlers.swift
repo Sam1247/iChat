@@ -40,6 +40,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         }
         
         Auth.auth().createUser(withEmail: email, password: password) {
+            [weak self]
             user, error in
             if error != nil {
                 print(error!)
@@ -50,26 +51,52 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             //uploading image
             
-            let storageRef = Storage.storage().reference()
+            let storageRef = Storage.storage().reference().child("images")
+            let imageRef = storageRef.child("myimage.png")
             
-            storageRef.putData(<#T##uploadData: Data##Data#>, metadata: <#T##StorageMetadata?#>, completion: <#T##((StorageMetadata?, Error?) -> Void)?##((StorageMetadata?, Error?) -> Void)?##(StorageMetadata?, Error?) -> Void#>)
-            
-            
-            let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
-            let usersRef = ref.child("users").child(userID)
-            let values = ["name": name, "email": email]
-            
-            usersRef.updateChildValues(values, withCompletionBlock: {
-                [weak self] (err, ref) in
-                if err != nil {
-                    print(err!)
-                    return
-                }
-                print("saved user successfuly in firebase db")
-                self?.dismiss(animated: true, completion: nil)
-            })
-            
+            if let uploadData = self?.profileImageView.image?.pngData() {
+                
+                imageRef.putData(uploadData, metadata: nil, completion: {
+                    [weak self] (metadata, error) in
+                    
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+                    
+                    var values = ["name": name, "email": email]
+                    
+                    imageRef.downloadURL(completion: { (url, error) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        if let profileImageUrl = url {
+                            values["profileImageUrl"] = profileImageUrl.absoluteString
+                        }
+                    })
+                    
+                    self?.registerUserIntoDataBase(userID: userID, values: values)
+                    
+                })
+            }
         }
+    }
+    
+    private func registerUserIntoDataBase (userID: String, values: [String: String]) {
+        let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
+        let usersRef = ref.child("users").child(userID)
+        
+        
+        usersRef.updateChildValues(values, withCompletionBlock: {
+            [weak self] (err, ref) in
+            if err != nil {
+                print(err!)
+                return
+            }
+            print("saved user successfuly in firebase db")
+            self?.dismiss(animated: true, completion: nil)
+        })
     }
     
 }
