@@ -26,8 +26,10 @@ class NewMessageController: UITableViewController {
             [weak self] (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
+                // updating user data
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
+                user.profileImageUrl = dictionary["profileImageUrl"] as? String
                 DispatchQueue.main.async {[weak self] in
                     self?.tableView.reloadData()
                 }

@@ -51,33 +51,27 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             //uploading image
             
-            let storageRef = Storage.storage().reference().child("images")
-            let imageRef = storageRef.child("myimage.png")
-            
+            let imageName = UUID().uuidString
+            let storageRef = Storage.storage().reference().child("images").child("\(imageName).png")
             if let uploadData = self?.profileImageView.image?.pngData() {
                 
-                imageRef.putData(uploadData, metadata: nil, completion: {
+                storageRef.putData(uploadData, metadata: nil, completion: {
                     [weak self] (metadata, error) in
                     
                     if error != nil {
                         print(error!)
                         return
                     }
-                    
-                    var values = ["name": name, "email": email]
-                    
-                    imageRef.downloadURL(completion: { (url, error) in
+                    storageRef.downloadURL(completion: { (url, error) in
                         if error != nil {
                             print(error!)
                             return
                         }
-                        if let profileImageUrl = url {
-                            values["profileImageUrl"] = profileImageUrl.absoluteString
+                        if let imageUrl = url?.absoluteString {
+                            let values = ["name": name, "email": email, "profileImageUrl": imageUrl]
+                            self?.registerUserIntoDataBase(userID: userID, values: values)
                         }
                     })
-                    
-                    self?.registerUserIntoDataBase(userID: userID, values: values)
-                    
                 })
             }
         }
