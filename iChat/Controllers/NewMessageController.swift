@@ -62,7 +62,7 @@ class NewMessageController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56
+        return 72
     }
 }
 
@@ -82,12 +82,13 @@ class UserCell: UITableViewCell {
         // adding constrains
         profileImageView.image = UIImage(named: "ChatProfile")
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.layer.cornerRadius = 20
+        profileImageView.layer.cornerRadius = 24
         profileImageView.layer.masksToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
