@@ -11,6 +11,8 @@ import Firebase
 
 class LoginController: UIViewController {
 
+    var messageController: MessagesController?
+    
     let inputsContainerView = UIView()
     let loginRegisterButton = UIButton(type: .system)
     let nameTextField = UITextField()

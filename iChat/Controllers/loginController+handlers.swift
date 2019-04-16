@@ -89,6 +89,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             print("saved user successfuly in firebase db")
+            self?.messageController?.fetchUserAndSetupNavBarItem()
             self?.dismiss(animated: true, completion: nil)
         })
     }
