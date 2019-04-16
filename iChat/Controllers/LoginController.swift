@@ -203,6 +203,7 @@ class LoginController: UIViewController {
                 print(error!)
                 return
             }
+            self.messageController?.fetchUserAndSetupNavBarItem()
             self.dismiss(animated: true, completion: nil)
         }
     }
