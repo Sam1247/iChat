@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		200871032266CDFD00BD7A94 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200871022266CDFD00BD7A94 /* ChatLogController.swift */; };
 		20AA03CE2260BF55003C6C92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */; };
 		20AA03D022611FDC003C6C92 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA03CF22611FDC003C6C92 /* NewMessageController.swift */; };
 		20AA03D322612580003C6C92 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AA03D222612580003C6C92 /* User.swift */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		1F04A3CAFB50A679AACB8619 /* Pods-iChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iChat.release.xcconfig"; path = "Target Support Files/Pods-iChat/Pods-iChat.release.xcconfig"; sourceTree = "<group>"; };
+		200871022266CDFD00BD7A94 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		20AA03CF22611FDC003C6C92 /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		20AA03D222612580003C6C92 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				20AA03CF22611FDC003C6C92 /* NewMessageController.swift */,
 				20AA625B225FFD6A008BF4CC /* MessagesController.swift */,
 				20C2FCD0226480660091F791 /* loginController+handlers.swift */,
+				200871022266CDFD00BD7A94 /* ChatLogController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				200871032266CDFD00BD7A94 /* ChatLogController.swift in Sources */,
 				20AA03D322612580003C6C92 /* User.swift in Sources */,
 				20AA03D022611FDC003C6C92 /* NewMessageController.swift in Sources */,
 				20AA625C225FFD6A008BF4CC /* MessagesController.swift in Sources */,
