@@ -13,6 +13,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
     let inputTextField = UITextField()
     
+    var user: User? {
+        didSet {
+            navigationItem.title = user?.name
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,7 +78,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId()
         let values = ["text": inputTextField.text]
-        childRef.updateChildValues(values)
+        childRef.updateChildValues(values as [AnyHashable : Any])
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
