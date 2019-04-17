@@ -60,7 +60,7 @@ class MessagesController: UITableViewController {
     func setupNavBarWithUser (user: User) {
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        titleView.backgroundColor = UIColor.red
+        //titleView.backgroundColor = UIColor.red
         navigationItem.titleView = titleView
         
         let containerView = UIView()
