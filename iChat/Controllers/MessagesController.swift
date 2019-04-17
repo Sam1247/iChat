@@ -98,6 +98,12 @@ class MessagesController: UITableViewController {
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
         
         self.navigationItem.titleView = titleView
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+    }
+    
+    @objc func showChatController () {
+        let chatController = ChatLogController(collectionViewLayout: UICollectionViewLayout())
+        navigationController?.pushViewController(chatController, animated: true)
     }
     
     @objc func handleLogout () {
