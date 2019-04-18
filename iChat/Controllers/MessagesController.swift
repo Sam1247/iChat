@@ -11,16 +11,48 @@ import Firebase
 
 class MessagesController: UITableViewController {
 
+    var messages = [Message]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleNewMessage))
         checkIfUserLoggedIn()
         //navigationItem.titleView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatLogController)))
+        observeMessages()
     }
     
-    @objc func showChatLogController () {
+    func observeMessages() {
+        let ref = Database.database().reference().child("messages")
+        ref.observe(.childAdded, with: {
+            [weak self] (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                let message = Message()
+                message.fromId = dictionary["fromId"] as? String
+                message.text = dictionary["text"] as? String
+                message.toId = dictionary["toId"] as? String
+                self?.messages.append(message)
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+                
+                print(message.text!)
+            }
+        }, withCancel: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
         
+        let message = messages[indexPath.row]
+        
+        cell.textLabel?.text = message.text
+        
+        return cell
     }
     
     @objc func handleNewMessage () {

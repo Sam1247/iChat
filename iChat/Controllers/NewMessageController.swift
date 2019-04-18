@@ -30,7 +30,9 @@ class NewMessageController: UITableViewController {
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
                 user.profileImageUrl = dictionary["profileImageUrl"] as? String
-                DispatchQueue.main.async {[weak self] in
+                user.id = snapshot.key 
+                DispatchQueue.main.async {
+                    [weak self] in
                     self?.tableView.reloadData()
                 }
                 self?.users.append(user)
@@ -52,8 +54,6 @@ class NewMessageController: UITableViewController {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
-        
-        
         
         if let profileImageUrl = user.profileImageUrl {
             cell.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)

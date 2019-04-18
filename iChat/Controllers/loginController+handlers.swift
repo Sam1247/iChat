@@ -78,7 +78,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     private func registerUserIntoDataBase (userID: String, values: [String: String]) {
-        let ref = Database.database().reference(fromURL: "https://ichat-43b15.firebaseio.com/")
+        let ref = Database.database().reference()
         let usersRef = ref.child("users").child(userID)
         
         
@@ -90,7 +90,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             }
             print("saved user successfuly in firebase db")
             //self?.messageController?.fetchUserAndSetupNavBarItem()
-            self?.messageController?.navigationItem.title = values["name"]
+            //self?.messageController?.navigationItem.title = values["name"]
+            let user = User()
+            user.name = values["name"]
+            user.email = values["email"]
+            user.profileImageUrl = values["profileImageUrl"]
+            self?.messageController?.setupNavBarWithUser(user: user)
+            
             self?.dismiss(animated: true, completion: nil)
         })
     }
