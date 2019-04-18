@@ -7,8 +7,32 @@
 //
 
 import UIKit
+import Firebase
 
 class UserCell: UITableViewCell {
+    
+    var message: Message? {
+        didSet {
+            if let toId = message?.toId {
+                let ref = Database.database().reference().child("users").child(toId)
+                ref.observe(.value, with: { (snapshot) in
+                    if let dictionary = snapshot.value as? [String: AnyObject] {
+                        self.textLabel?.text = dictionary["name"] as? String
+                        
+                        if let profileImageUrl = dictionary["profileImageUrl"] as? String {
+                            self.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)
+                        }
+                        
+                    }
+                    
+                    
+                }, withCancel: nil )
+            }
+            
+            self.detailTextLabel?.text = message?.text
+            
+        }
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()

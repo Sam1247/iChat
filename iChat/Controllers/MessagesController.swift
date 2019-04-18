@@ -54,24 +54,7 @@ class MessagesController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let message = messages[indexPath.row]
-        
-        if let toId = message.toId {
-            let ref = Database.database().reference().child("users").child(toId)
-            ref.observe(.value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    cell.textLabel?.text = dictionary["name"] as? String
-                    
-                    if let profileImageUrl = dictionary["profileImageUrl"] as? String {
-                        cell.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)
-                    }
-                    
-                }
-                
-                
-            }, withCancel: nil )
-        }
-        
-        cell.detailTextLabel?.text = message.text
+        cell.message = message
         
         return cell
     }
