@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2004AE7D226891BA002A5BB3 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2004AE7C226891BA002A5BB3 /* UserCell.swift */; };
 		200871032266CDFD00BD7A94 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200871022266CDFD00BD7A94 /* ChatLogController.swift */; };
 		200AC3A22267C76E00D1EFEF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200AC3A12267C76E00D1EFEF /* Message.swift */; };
 		20AA03CE2260BF55003C6C92 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		1F04A3CAFB50A679AACB8619 /* Pods-iChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iChat.release.xcconfig"; path = "Target Support Files/Pods-iChat/Pods-iChat.release.xcconfig"; sourceTree = "<group>"; };
+		2004AE7C226891BA002A5BB3 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		200871022266CDFD00BD7A94 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		200AC3A12267C76E00D1EFEF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		20AA03CD2260BF55003C6C92 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -56,6 +58,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2004AE7B22689191002A5BB3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2004AE7C226891BA002A5BB3 /* UserCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		20AA03D122612563003C6C92 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +96,7 @@
 		20AA6258225FFD6A008BF4CC /* iChat */ = {
 			isa = PBXGroup;
 			children = (
+				2004AE7B22689191002A5BB3 /* Views */,
 				20CDD062226502AD00332D32 /* helpers */,
 				20AA03D122612563003C6C92 /* Models */,
 				20AA626B226005DA008BF4CC /* Controllers */,
@@ -269,6 +280,7 @@
 				20CDD064226502C500332D32 /* extentions.swift in Sources */,
 				20AA626D22600611008BF4CC /* LoginController.swift in Sources */,
 				20C2FCD1226480660091F791 /* loginController+handlers.swift in Sources */,
+				2004AE7D226891BA002A5BB3 /* UserCell.swift in Sources */,
 				20AA625A225FFD6A008BF4CC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -50,7 +50,16 @@ class MessagesController: UITableViewController {
         
         let message = messages[indexPath.row]
         
-        cell.textLabel?.text = message.text
+        if let toId = message.toId {
+            let ref = Database.database().reference().child("users").child(toId)
+            ref.observe(.value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    cell.textLabel?.text = dictionary["name"] as? String
+                }
+            }, withCancel: nil )
+        }
+        
+        cell.detailTextLabel?.text = message.text
         
         return cell
     }
