@@ -35,6 +35,7 @@ class MessagesController: UITableViewController {
                 message.fromId = dictionary["fromId"] as? String
                 message.text = dictionary["text"] as? String
                 message.toId = dictionary["toId"] as? String
+                message.timeStamp = dictionary["timestamp"] as? Int
                 self?.messages.append(message)
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
@@ -50,7 +51,6 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
         
         let message = messages[indexPath.row]

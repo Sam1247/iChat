@@ -18,19 +18,20 @@ class UserCell: UITableViewCell {
                 ref.observe(.value, with: { (snapshot) in
                     if let dictionary = snapshot.value as? [String: AnyObject] {
                         self.textLabel?.text = dictionary["name"] as? String
-                        
                         if let profileImageUrl = dictionary["profileImageUrl"] as? String {
                             self.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)
                         }
-                        
                     }
-                    
-                    
                 }, withCancel: nil )
             }
             
             self.detailTextLabel?.text = message?.text
-            
+            if let timestamp = message?.timeStamp {
+                let timestampDate = NSDate(timeIntervalSince1970: TimeInterval(timestamp))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm:ss a"
+                timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+            }
         }
     }
     
@@ -40,7 +41,9 @@ class UserCell: UITableViewCell {
         detailTextLabel?.frame = CGRect(x: 62, y: (detailTextLabel?.frame.origin.y)! + 2, width: (detailTextLabel?.frame.width)!, height: (detailTextLabel?.frame.height)!)
     }
     
-    var profileImageView = UIImageView()
+    let profileImageView = UIImageView()
+    
+    let timeLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -55,6 +58,19 @@ class UserCell: UITableViewCell {
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        
+        addSubview(timeLabel)
+        timeLabel.text = "dasddsdad"
+        timeLabel.font = UIFont.systemFont(ofSize: 14)
+        timeLabel.textColor = UIColor.darkGray
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // adding constrains
+        
+        timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
+        timeLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        timeLabel.heightAnchor.constraint(equalTo: textLabel!.heightAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
