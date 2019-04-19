@@ -26,7 +26,8 @@ class MessagesController: UITableViewController {
         
         //observeMessages()
         
-        observeUserMessages()
+        
+        
     }
     
     func observeUserMessages() {
@@ -145,6 +146,13 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser (user: User) {
+        
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
         //titleView.backgroundColor = UIColor.red

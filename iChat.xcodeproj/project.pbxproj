@@ -114,8 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				20AA626C22600611008BF4CC /* LoginController.swift */,
-				20AA03CF22611FDC003C6C92 /* NewMessageController.swift */,
 				20AA625B225FFD6A008BF4CC /* MessagesController.swift */,
+				20AA03CF22611FDC003C6C92 /* NewMessageController.swift */,
 				20C2FCD0226480660091F791 /* loginController+handlers.swift */,
 				200871022266CDFD00BD7A94 /* ChatLogController.swift */,
 			);
