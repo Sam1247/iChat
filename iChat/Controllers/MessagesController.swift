@@ -24,36 +24,73 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-        observeMessages()
+        //observeMessages()
+        
+        observeUserMessages()
     }
     
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: {
-            [weak self] (snapshot) in
-            if let dictionary = snapshot.value as? [String: Any] {
-                let message = Message()
-                message.fromId = dictionary["fromId"] as? String
-                message.text = dictionary["text"] as? String
-                message.toId = dictionary["toId"] as? String
-                message.timeStamp = dictionary["timestamp"] as? Int
-                if let toId = message.toId {
-                    self?.messagesDictionary[toId] = message
-                    self?.messages = Array((self?.messagesDictionary.values)!)
-                    self?.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timeStamp! > message2.timeStamp!
-                    })
-                    
+    func observeUserMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        
+        ref.observe(.childAdded, with: { (snapshot) in
+            let messageId = snapshot.key
+            let messageRef = Database.database().reference().child("messages").child(messageId)
+            
+            messageRef.observeSingleEvent(of: .value, with: {
+                [weak self] (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    let message = Message()
+                    message.fromId = dictionary["fromId"] as? String
+                    message.text = dictionary["text"] as? String
+                    message.toId = dictionary["toId"] as? String
+                    message.timeStamp = dictionary["timestamp"] as? Int
+                    if let toId = message.toId {
+                        self?.messagesDictionary[toId] = message
+                        self?.messages = Array((self?.messagesDictionary.values)!)
+                        self?.messages.sort(by: { (message1, message2) -> Bool in
+                            return message1.timeStamp! > message2.timeStamp!
+                        })
+                        
+                    }
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                    }
+                    print(message.text!)
                 }
-                //self?.messages.append(message)
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-                
-                print(message.text!)
-            }
+            }, withCancel: nil)
         }, withCancel: nil)
     }
+    
+//    func observeMessages() {
+//        let ref = Database.database().reference().child("messages")
+//        ref.observe(.childAdded, with: {
+//            [weak self] (snapshot) in
+//            if let dictionary = snapshot.value as? [String: Any] {
+//                let message = Message()
+//                message.fromId = dictionary["fromId"] as? String
+//                message.text = dictionary["text"] as? String
+//                message.toId = dictionary["toId"] as? String
+//                message.timeStamp = dictionary["timestamp"] as? Int
+//                if let toId = message.toId {
+//                    self?.messagesDictionary[toId] = message
+//                    self?.messages = Array((self?.messagesDictionary.values)!)
+//                    self?.messages.sort(by: { (message1, message2) -> Bool in
+//                        return message1.timeStamp! > message2.timeStamp!
+//                    })
+//
+//                }
+//                DispatchQueue.main.async {
+//                    self?.tableView.reloadData()
+//                }
+//
+//                print(message.text!)
+//            }
+//        }, withCancel: nil)
+//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count

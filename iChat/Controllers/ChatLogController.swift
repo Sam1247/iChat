@@ -81,7 +81,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
         let fromId = Auth.auth().currentUser?.uid
         let timesnap = Int(NSDate().timeIntervalSince1970)
         let values = ["text": inputTextField.text!, "toId": toId!, "fromId": fromId!, "timestamp": timesnap] as [String : Any]
-        childRef.updateChildValues(values)
+        //childRef.updateChildValues(values)]
+        childRef.updateChildValues(values) { (error, ref) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromId!)
+            
+            let messageId = childRef.key!
+            userMessageRef.updateChildValues([messageId: 1])
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
