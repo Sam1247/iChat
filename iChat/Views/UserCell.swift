@@ -13,18 +13,7 @@ class UserCell: UITableViewCell {
     
     var message: Message? {
         didSet {
-            if let toId = message?.toId {
-                let ref = Database.database().reference().child("users").child(toId)
-                ref.observe(.value, with: { (snapshot) in
-                    if let dictionary = snapshot.value as? [String: AnyObject] {
-                        self.textLabel?.text = dictionary["name"] as? String
-                        if let profileImageUrl = dictionary["profileImageUrl"] as? String {
-                            self.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)
-                        }
-                    }
-                }, withCancel: nil )
-            }
-            
+            setupNameAndProfile()
             self.detailTextLabel?.text = message?.text
             if let timestamp = message?.timeStamp {
                 let timestampDate = NSDate(timeIntervalSince1970: TimeInterval(timestamp))
@@ -32,6 +21,20 @@ class UserCell: UITableViewCell {
                 dateFormatter.dateFormat = "hh:mm:ss a"
                 timeLabel.text = dateFormatter.string(from: timestampDate as Date)
             }
+        }
+    }
+    
+    func setupNameAndProfile() {
+        if let toId = message?.toId {
+            let ref = Database.database().reference().child("users").child(toId)
+            ref.observe(.value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    self.textLabel?.text = dictionary["name"] as? String
+                    if let profileImageUrl = dictionary["profileImageUrl"] as? String {
+                        self.profileImageView.loadImageUsingCacheWith(urlString: profileImageUrl)
+                    }
+                }
+            }, withCancel: nil )
         }
     }
     
@@ -60,7 +63,7 @@ class UserCell: UITableViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         addSubview(timeLabel)
-        timeLabel.text = "dasddsdad"
+        // timeLabel.text = "dasddsdad"
         timeLabel.font = UIFont.systemFont(ofSize: 14)
         timeLabel.textColor = UIColor.darkGray
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
