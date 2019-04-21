@@ -25,9 +25,6 @@ class MessagesController: UITableViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         //observeMessages()
-        
-        
-        
     }
     
     func observeUserMessages() {
@@ -108,6 +105,33 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let message = messages[indexPath.row]
+        guard let chatPartnerId = message.chatPartnerId() else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("users").child(chatPartnerId)
+        
+        ref.observeSingleEvent(of: .value, with: {
+            [weak self] (snapshot) in
+            
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                return
+            }
+            
+            let user = User()
+            user.name = dictionary["name"] as? String
+            user.email = dictionary["email"] as? String
+            user.profileImageUrl = dictionary["profileImageUrl"] as? String
+            
+            self?.showChatControllerFor(user: user)
+            
+        }, withCancel: nil)
+        
     }
     
     @objc func handleNewMessage () {

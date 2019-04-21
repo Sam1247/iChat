@@ -24,9 +24,10 @@ class UserCell: UITableViewCell {
         }
     }
     
-    func setupNameAndProfile() {
-        if let toId = message?.toId {
-            let ref = Database.database().reference().child("users").child(toId)
+    private func setupNameAndProfile() {
+        
+        if let id = message?.chatPartnerId() {
+            let ref = Database.database().reference().child("users").child(id)
             ref.observe(.value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: AnyObject] {
                     self.textLabel?.text = dictionary["name"] as? String

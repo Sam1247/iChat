@@ -198,13 +198,14 @@ class LoginController: UIViewController {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+        Auth.auth().signIn(withEmail: email, password: password) {
+            [weak self](user, error) in
             if error != nil {
                 print(error!)
                 return
             }
-            self.messageController?.fetchUserAndSetupNavBarItem()
-            self.dismiss(animated: true, completion: nil)
+            self?.messageController?.fetchUserAndSetupNavBarItem()
+            self?.dismiss(animated: true, completion: nil)
         }
     }
     
