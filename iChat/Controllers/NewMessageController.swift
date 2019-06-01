@@ -65,6 +65,7 @@ class NewMessageController: UITableViewController {
         return 72
     }
     
+    // weak i'm not sure
     var messageController: MessagesController?
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

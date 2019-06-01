@@ -23,8 +23,6 @@ class MessagesController: UITableViewController {
         checkIfUserLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
-        
-        //observeMessages()
     }
     
     func observeUserMessages() {
@@ -49,6 +47,7 @@ class MessagesController: UITableViewController {
                     if let toId = message.toId {
                         self?.messagesDictionary[toId] = message
                         self?.messages = Array((self?.messagesDictionary.values)!)
+                        //TODO:  problem i don't have to sort the array everytime
                         self?.messages.sort(by: { (message1, message2) -> Bool in
                             return message1.timeStamp! > message2.timeStamp!
                         })
@@ -96,10 +95,8 @@ class MessagesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-        
         let message = messages[indexPath.row]
         cell.message = message
-        
         return cell
     }
     
@@ -119,6 +116,8 @@ class MessagesController: UITableViewController {
         ref.observeSingleEvent(of: .value, with: {
             [weak self] (snapshot) in
             
+            //print(snapshot)
+            
             guard let dictionary = snapshot.value as? [String: AnyObject] else {
                 return
             }
@@ -127,6 +126,7 @@ class MessagesController: UITableViewController {
             user.name = dictionary["name"] as? String
             user.email = dictionary["email"] as? String
             user.profileImageUrl = dictionary["profileImageUrl"] as? String
+            user.id = chatPartnerId
             
             self?.showChatControllerFor(user: user)
             
@@ -136,6 +136,8 @@ class MessagesController: UITableViewController {
     
     @objc func handleNewMessage () {
         let newMessageController = NewMessageController()
+        // delegation
+        // TODO memory management
         newMessageController.messageController = self
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
