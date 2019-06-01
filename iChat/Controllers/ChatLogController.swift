@@ -9,8 +9,9 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+class ChatLogController: UIViewController, UITextFieldDelegate {
     
+    let tableView = UITableView()
     let inputTextField = UITextField()
     let cellId = "cellId"
     var messages = [Message]()
@@ -26,12 +27,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        
+
         let userMessageRef = Database.database().reference().child("user-messages").child(uid)
         userMessageRef.observe(.childAdded) { (snapshot) in
             let messageId = snapshot.key
             let messageRef = Database.database().reference().child("messages").child(messageId)
-            
+
             messageRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 //print(snapshot)
                 guard let dictionary = snapshot.value as? [String: Any] else {
@@ -45,35 +46,38 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)
                     DispatchQueue.main.async {
-                        self.collectionView.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
-                
+
             }, withCancel: nil)
         }
     }
     
+    override func loadView() {
+        super.loadView()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-
-        
-        collectionView.backgroundColor = .white
-
+        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        setupTableView()
         setupInputComponents()
-        
+        tableView.dataSource = self
+        tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
+        tableView.separatorStyle = .none
 
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        cell.backgroundColor = .blue
-        return cell
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
+    func setupTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -81,6 +85,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     func setupInputComponents() {
+        let tempView = UIView()
+        tempView.backgroundColor = .green
+        tempView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tempView)
+        
+        
+        
         let containerView = UIView()
         containerView.backgroundColor = .white
         //containerView.backgroundColor = UIColor.red
@@ -157,5 +168,18 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSend()
         return true
+    }
+}
+
+extension ChatLogController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatMessageCell
+        cell.messageLabel.text = messages[indexPath.row].text
+        let toId = messages[indexPath.row].toId
+        cell.isInComing = toId != user?.id
+        return cell
     }
 }
