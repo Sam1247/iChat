@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UIViewController, UITextFieldDelegate {
+class ChatLogController: UIViewController {
     
     let tableView = UITableView()
     let inputTextField = UITextField()
@@ -118,7 +118,6 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
         inputTextField.placeholder = "Enter message..."
         inputTextField.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(inputTextField)
-        inputTextField.delegate = self
         
         // adding constrains
         inputTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 8).isActive = true
@@ -162,24 +161,27 @@ class ChatLogController: UIViewController, UITextFieldDelegate {
             let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId!)
             recipientUserMessageRef.updateChildValues([messageId: 1])
         }
+        
+        DispatchQueue.main.async {
+            self.inputTextField.text = ""
+        }
     }
     
-    // for quick testing
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        handleSend()
-        return true
-    }
 }
 
 extension ChatLogController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatMessageCell
         cell.messageLabel.text = messages[indexPath.row].text
         let toId = messages[indexPath.row].toId
+        cell.profileImageUrl = user?.profileImageUrl
         cell.isInComing = toId != user?.id
         return cell
     }
+    
 }

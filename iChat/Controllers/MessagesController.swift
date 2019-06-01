@@ -44,8 +44,8 @@ class MessagesController: UITableViewController {
                     message.text = dictionary["text"] as? String
                     message.toId = dictionary["toId"] as? String
                     message.timeStamp = dictionary["timestamp"] as? Int
-                    if let toId = message.toId {
-                        self?.messagesDictionary[toId] = message
+                    if let chatPartner = message.chatPartnerId() {
+                        self?.messagesDictionary[chatPartner] = message
                         self?.messages = Array((self?.messagesDictionary.values)!)
                         //TODO:  problem i don't have to sort the array everytime
                         self?.messages.sort(by: { (message1, message2) -> Bool in
