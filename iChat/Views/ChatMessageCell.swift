@@ -15,6 +15,9 @@ class ChatMessageCell: UITableViewCell {
     var leadingConstraint: NSLayoutConstraint!
     var trailingConstraint: NSLayoutConstraint!
     
+    var profileImageView = UIImageView()
+    
+    
     var isInComing: Bool! {
         didSet {
             bubblebackgroundView.backgroundColor = isInComing ? .white: .yellow
@@ -22,6 +25,7 @@ class ChatMessageCell: UITableViewCell {
             if isInComing {
                 leadingConstraint.isActive = true
                 trailingConstraint.isActive = false
+                setupProfileImage()
             } else {
                 leadingConstraint.isActive = false
                 trailingConstraint.isActive = true
@@ -29,10 +33,22 @@ class ChatMessageCell: UITableViewCell {
         }
     }
     
+    func setupProfileImage () {
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.image = UIImage(named: "ChatProfile")
+        profileImageView.layer.cornerRadius = 16
+        profileImageView.layer.masksToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
+        addSubview(profileImageView)
+        // constrains
+        profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         backgroundColor = .clear
         //bubblebackgroundView.backgroundColor = .yellow
         bubblebackgroundView.layer.cornerRadius = 12
@@ -57,8 +73,7 @@ class ChatMessageCell: UITableViewCell {
                           bubblebackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 16)
         ]
         NSLayoutConstraint.activate(constrains)
-        
-        leadingConstraint = messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 32)
+        leadingConstraint = messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 56)
         trailingConstraint = messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -32)
     }
     
