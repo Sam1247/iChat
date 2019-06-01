@@ -53,13 +53,23 @@ class MessagesController: UITableViewController {
                         })
                         
                     }
-                    DispatchQueue.main.async {
-                        self?.tableView.reloadData()
-                    }
-                    print(message.text!)
+                    
+                    // fix reloading many times i hope xD
+                    self?.timer?.invalidate()
+                    self?.timer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.handleReloadTable), userInfo: nil, repeats: false)
+                    //print(message.text!)
                 }
             }, withCancel: nil)
         }, withCancel: nil)
+    }
+    
+    var timer: Timer?
+    
+    @objc func handleReloadTable () {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            print("reloaded message controller table view!")
+        }
     }
     
 //    func observeMessages() {
