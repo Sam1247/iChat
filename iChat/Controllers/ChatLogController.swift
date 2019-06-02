@@ -61,14 +61,14 @@ class ChatLogController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        setupInputComponents()
+        setUpkeyboardObservers()
         setupTableView()
+        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
-        setupInputComponents()
-        setUpkeyboardObservers()
-
+        
     }
     
     
@@ -109,7 +109,7 @@ class ChatLogController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
     }
@@ -121,11 +121,12 @@ class ChatLogController: UIViewController {
     var containerViewButtomAnchor: NSLayoutConstraint?
     
     
+    var containerView: UIView!
 
     
     func setupInputComponents() {
     
-        let containerView = UIView()
+        containerView = UIView()
         containerView.backgroundColor = .white
         //containerView.backgroundColor = UIColor.red
         containerView.translatesAutoresizingMaskIntoConstraints = false
