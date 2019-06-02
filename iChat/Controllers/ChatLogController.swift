@@ -63,11 +63,45 @@ class ChatLogController: UIViewController {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         setupTableView()
-        setupInputComponents()
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
+        setupInputComponents()
+        setUpkeyboardObservers()
 
+    }
+    
+    
+    func setUpkeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        // to avoid memory leaks (avoid calling the funciton many times
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func handleKeyboardWillShow (notification: NSNotification) {
+        let keyboardFrame = notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as?  CGRect
+        let keyboardDuration = notification.userInfo?["UIKeyboardAnimationDurationUserInfoKey"]
+        //print(notification.userInfo)
+        containerViewButtomAnchor?.constant = -keyboardFrame!.height
+        UIView.animate(withDuration: keyboardDuration! as! TimeInterval) {
+            // to animate constraints
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func handleKeyboardWillHide (notification: NSNotification) {
+        let keyboardDuration = notification.userInfo?["UIKeyboardAnimationDurationUserInfoKey"]
+        containerViewButtomAnchor?.constant = 0
+        UIView.animate(withDuration: keyboardDuration! as! TimeInterval) {
+            // to animate constraints
+            self.view.layoutIfNeeded()
+        }
     }
     
     func setupTableView() {
@@ -84,14 +118,13 @@ class ChatLogController: UIViewController {
         return CGSize(width: view.frame.height, height: 80)
     }
     
+    var containerViewButtomAnchor: NSLayoutConstraint?
+    
+    
+
+    
     func setupInputComponents() {
-        let tempView = UIView()
-        tempView.backgroundColor = .green
-        tempView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tempView)
-        
-        
-        
+    
         let containerView = UIView()
         containerView.backgroundColor = .white
         //containerView.backgroundColor = UIColor.red
@@ -99,7 +132,10 @@ class ChatLogController: UIViewController {
         view.addSubview(containerView)
         // adding constrains
         containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        containerViewButtomAnchor = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        containerViewButtomAnchor?.isActive = true
+        
         containerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
