@@ -33,34 +33,40 @@ class MessagesController: UITableViewController {
         let ref = Database.database().reference().child("user-messages").child(uid)
         
         ref.observe(.childAdded, with: { (snapshot) in
-            let messageId = snapshot.key
-            let messageRef = Database.database().reference().child("messages").child(messageId)
-            
-            messageRef.observeSingleEvent(of: .value, with: {
-                [weak self] (snapshot) in
-                if let dictionary = snapshot.value as? [String: Any] {
-                    let message = Message()
-                    message.fromId = dictionary["fromId"] as? String
-                    message.text = dictionary["text"] as? String
-                    message.toId = dictionary["toId"] as? String
-                    message.timeStamp = dictionary["timestamp"] as? Int
-                    if let chatPartner = message.chatPartnerId() {
-                        self?.messagesDictionary[chatPartner] = message
-                        self?.messages = Array((self?.messagesDictionary.values)!)
-                        //TODO:  problem i don't have to sort the array everytime
-                        self?.messages.sort(by: { (message1, message2) -> Bool in
-                            return message1.timeStamp! > message2.timeStamp!
-                        })
+            let userId = snapshot.key
+            Database.database().reference().child("user-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
+                //print(snapshot)
+                let messageId = snapshot.key
+                
+                let messageRef = Database.database().reference().child("messages").child(messageId)
+                
+                messageRef.observeSingleEvent(of: .value, with: {
+                    [weak self] (snapshot) in
+                    if let dictionary = snapshot.value as? [String: Any] {
+                        let message = Message()
+                        message.fromId = dictionary["fromId"] as? String
+                        message.text = dictionary["text"] as? String
+                        message.toId = dictionary["toId"] as? String
+                        message.timeStamp = dictionary["timestamp"] as? Int
+                        if let chatPartner = message.chatPartnerId() {
+                            self?.messagesDictionary[chatPartner] = message
+                            self?.messages = Array((self?.messagesDictionary.values)!)
+                            //TODO:  problem i don't have to sort the array everytime
+                            self?.messages.sort(by: { (message1, message2) -> Bool in
+                                return message1.timeStamp! > message2.timeStamp!
+                            })
+                            
+                        }
                         
+                        // fix reloading many times i hope xD
+                        self?.timer?.invalidate()
+                        self?.timer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.handleReloadTable), userInfo: nil, repeats: false)
+                        //print(message.text!)
                     }
-                    
-                    // fix reloading many times i hope xD
-                    self?.timer?.invalidate()
-                    self?.timer = Timer.scheduledTimer(timeInterval: 1, target: self!, selector: #selector(self?.handleReloadTable), userInfo: nil, repeats: false)
-                    //print(message.text!)
-                }
+                }, withCancel: nil)
             }, withCancel: nil)
         }, withCancel: nil)
+        //print(messageId)
     }
     
     var timer: Timer?

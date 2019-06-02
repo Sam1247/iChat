@@ -24,11 +24,11 @@ class ChatLogController: UIViewController {
     }
     
     func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             return
         }
 
-        let userMessageRef = Database.database().reference().child("user-messages").child(uid)
+        let userMessageRef = Database.database().reference().child("user-messages").child(uid).child(toId)
         userMessageRef.observe(.childAdded) { (snapshot) in
             let messageId = snapshot.key
             let messageRef = Database.database().reference().child("messages").child(messageId)
@@ -43,13 +43,11 @@ class ChatLogController: UIViewController {
                 message.text = dictionary["text"] as? String
                 message.toId = dictionary["toId"] as? String
                 message.timeStamp = dictionary["timestamp"] as? Int
-                if message.chatPartnerId() == self.user?.id {
-                    self.messages.append(message)
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                self.messages.append(message)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
-
+                
             }, withCancel: nil)
         }
     }
@@ -68,13 +66,11 @@ class ChatLogController: UIViewController {
         tableView.dataSource = self
         tableView.register(ChatMessageCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
-        
     }
     
     
     func setUpkeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
@@ -83,6 +79,8 @@ class ChatLogController: UIViewController {
         // to avoid memory leaks (avoid calling the funciton many times
         NotificationCenter.default.removeObserver(self)
     }
+    
+    // TODO: implement input accessory view.
     
     @objc func handleKeyboardWillShow (notification: NSNotification) {
         let keyboardFrame = notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as?  CGRect
@@ -191,11 +189,11 @@ class ChatLogController: UIViewController {
             
             // client-side fan-out for data consistency
             
-            let userMessageRef = Database.database().reference().child("user-messages").child(fromId!)
+            let userMessageRef = Database.database().reference().child("user-messages").child(fromId!).child(toId!)
             let messageId = childRef.key!
             userMessageRef.updateChildValues([messageId: 1])
             
-            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId!)
+            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId!).child(fromId!)
             recipientUserMessageRef.updateChildValues([messageId: 1])
         }
         
