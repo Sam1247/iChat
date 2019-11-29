@@ -284,6 +284,7 @@ class MessagesController: UITableViewController {
         
         let loginController = LoginController()
         loginController.messageController = self
+        loginController.modalPresentationStyle = .fullScreen
         present(loginController, animated: true, completion: nil)
     }
 
